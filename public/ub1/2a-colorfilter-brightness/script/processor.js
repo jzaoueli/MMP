@@ -6,9 +6,15 @@
 
 var isFirefox = /Firefox/.test(navigator.userAgent);
 var isChrome = /Chrome/.test(navigator.userAgent);
+var isGreaScale1 = false;
 
 var config = {
-    color_offset: 0
+    color_offset: 0,
+    color_offset_R: 0,
+    color_offset_G: 0,
+    color_offset_B: 0,
+    IsGreyScale: false
+
 };
 
 var processor = {
@@ -18,6 +24,24 @@ var processor = {
         // get color config value
         config.color_offset = document.getElementById("color_offset").value;
         this.log("color offset = " + config.color_offset);
+    },
+
+    // "brightness" effect: change_color_offset: handled by html <input id="color_offset" ...
+    change_color_R: function () {
+        config.color_offset_R = document.getElementById("color_offset_R").value;
+        this.log("R Offset = " + config.color_offset_R);
+    },
+    change_color_G: function () {
+        config.color_offset_G = document.getElementById("color_offset_G").value;
+        this.log("B Offset = " + config.color_offset_G);
+    },
+    change_color_B: function () {
+        config.color_offset_B = document.getElementById("color_offset_B").value;
+        this.log("G Offset = " + config.color_offset_B);
+    },
+    switch_greyscale: function () {
+        isGreaScale1 = document.getElementById("greyscale_Y").checked;
+        this.log("Grauwert = " + isGreaScale1);
     },
 
     // computeFrame
@@ -46,6 +70,14 @@ var processor = {
 
         // color offset for "brightness" effect
         offset = parseInt(config.color_offset);
+        offsetR = parseInt(config.color_offset_R);
+        offsetG = parseInt(config.color_offset_G);
+        offsetB = parseInt(config.color_offset_B);
+
+
+        //IsGreyScale = isGreaScale1;
+
+
         //offset = 100;
         //console.log("Using offset " + config.color_offset);
 
@@ -56,11 +88,21 @@ var processor = {
             var g = frame.data[i * 4 + 1];
             var b = frame.data[i * 4 + 2];
 
+            var y = r * 0.30 + g * 0.59 + b * 0.11;
+
+            //fuer den Grauwet
+            if (isGreaScale1 == true) {
+                r = y;
+                g = y;
+                b = y;
+            }
+
+
             // do the filter processing
             // "brightness": add color offset
-            r = r + offset;
-            g = g + offset;
-            b = b + offset;
+            r = r + offset + offsetR;
+            g = g + offset + offsetG;
+            b = b + offset + offsetB;
 
             frame.data[i * 4 + 0] = r;
             frame.data[i * 4 + 1] = g;

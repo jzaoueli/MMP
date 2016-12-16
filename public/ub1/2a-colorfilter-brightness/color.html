@@ -12,7 +12,7 @@
     <!-- Page Style -->
     <style>
         body {
-            background: black;
+            background: lightslategray;
             color: #CCCCCC;
             font-family: sans-serif;
         }
@@ -54,6 +54,16 @@
 
 Brightness (Color Offset): <input id="color_offset" type="range" min="-100" max="100"
                                   onchange="processor.change_color_offset()"/>
+</br>
+Brightness R: <input id="color_offset_R" type="range" min="-100" max="100" onchange="processor.change_color_R()"/>
+</br>
+Brightness G: <input id="color_offset_G" type="range" min="-100" max="100" onchange="processor.change_color_G()"/>
+</br>
+Brightness B: <input id="color_offset_B" type="range" min="-100" max="100" onchange="processor.change_color_B()"/>
+
+</br>
+Graustufen (Y): <input id="greyscale_Y" type="checkbox" onchange="processor.switch_greyscale()"/>
+
 
 <!-- camera button and script -->
 <hr>
