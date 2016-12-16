@@ -1,9 +1,3 @@
-//HTML5 Example: Color Filter 
-//(c) 2011-13 
-// J�rgen Lohr, lohr@beuth-hochschule.de
-// Oliver Lietz, lietz@nanocosmos.de
-//v1.4, May.2013
-
 var isFirefox = /Firefox/.test(navigator.userAgent);
 var isChrome = /Chrome/.test(navigator.userAgent);
 
@@ -243,9 +237,13 @@ var processor = {
 
         //chrome security for local file operations
         if (isChrome)
-            alert("Security Error\r\n - Call chrome with --allow-file-access-from-files\r\n\r\n" + e);
+            alert("Security Error\r\n " +
+                "- Call chrome with --allow-file-access-from-files\r\n\r\n"
+                + e);
         else if (isFirefox)
-            alert("Security Error\r\n - Open Firefox config (about: config) and set the value\r\nsecurity.fileuri.strict_origin_policy = false ");
+            alert("Security Error\r\n " +
+                "- Open Firefox config (about: config) and set the value\r\n" +
+                "security.fileuri.strict_origin_policy = false ");
         else
             alert("Error in getImageData " + e);
     },

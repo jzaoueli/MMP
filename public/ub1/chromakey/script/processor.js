@@ -1,9 +1,3 @@
-//HTML5 Example: Chroma Key Filter 
-//(c) 2011-13 
-// Jürgen Lohr, lohr@beuth-hochschule.de
-// Oliver Lietz, lietz@nanocosmos.de
-//v1.4, May.2013
-
 var isFirefox = /Firefox/.test(navigator.userAgent);
 var isChrome = /Chrome/.test(navigator.userAgent);
 
@@ -41,11 +35,11 @@ var processor = {
             var g = frame.data[i * 4 + 1];
             var b = frame.data[i * 4 + 2];
 
-			// do the chroma key:
+            // do the chroma key:
 
             // check for key color "green" 
             if (g > 210 && r > 170 && b < 140) {
-				// set "alpha" value to (0)
+                // set "alpha" value to (0)
                 frame.data[i * 4 + 3] = 0;
             }
         }
