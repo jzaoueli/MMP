@@ -31,21 +31,21 @@
     </style>
 
     <!-- Javascript image processing -->
-    <script type="text/javascript" src="script/processor-green.js"></script>
+    <script type="text/javascript" src="script/processor-blue.js"></script>
 
 </head>
 <body>
-<h1>Chroma-Key HTML5 Green</h1>
+<h1>Chroma-Key HTML5 Blue</h1>
 <div>
 
     <!-- video container - run javascript doLoad() when ready -->
     <video id="video" muted="true" autobuffer="true" controls="true" tabindex="0" onloadedmetadata="processor.doLoad()">
 
         <!-- webm file for firefox, chrome -->
-        <source src="../assets/v2b.webm" type="video/webm"/>
+        <source src="../assets/blue_screen.webm" type="video/webm"/>
 
         <!-- mp4 file for safari, IE -->
-        <source src="../assets/v2b.mp4" type="video/mp4"/>
+        <source src="../assets/blue_screen.mp4" type="video/mp4"/>
 
         <!-- Alternate content: just print a message, no video available -->
         No HTML5-Video support? Try a newer browser! (Opera11, IE9, Firefox4, Safari5)
@@ -61,9 +61,11 @@
 </div>
 <hr>
 
-<!-- camera button and script -->
+<!-- camera button and script-->
 <hr>
 <a href="#" onclick="startCam()">Start Camera</a>
+<!-- der korrekte pfad wurde hinzugefügt-->
+
 <script type="text/javascript" src="script/camera.js"></script>
 
 <!-- log area to display information from javascript -->
