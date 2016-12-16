@@ -6,14 +6,19 @@
 
 var isFirefox = /Firefox/.test(navigator.userAgent);
 var isChrome = /Chrome/.test(navigator.userAgent);
-var isGreaScale1 = false;
+
+//Diese werte werden verändert wenn sich die entsprechende checkbox verändert (könnte man auch in var config machen, aber
+//bei den bools hat es nicht funktioniert. Daher habe ich sie ausserhalb von config festgelegt.
+var isGreaScale = false;
+var isSepia = false;
+
 
 var config = {
     color_offset: 0,
     color_offset_R: 0,
     color_offset_G: 0,
     color_offset_B: 0,
-    IsGreyScale: false
+    //IsGreyScale: false
 
 };
 
@@ -40,8 +45,13 @@ var processor = {
         this.log("G Offset = " + config.color_offset_B);
     },
     switch_greyscale: function () {
-        isGreaScale1 = document.getElementById("greyscale_Y").checked;
-        this.log("Grauwert = " + isGreaScale1);
+        isGreaScale = document.getElementById("greyscale_Y").checked;
+        this.log("Grauwert = " + isGreaScale);
+    },
+
+    switch_sepia: function () {
+        isSepia = document.getElementById("sepia").checked;
+        this.log("Sepiafilter = " + isSepia);
     },
 
     // computeFrame
@@ -88,15 +98,22 @@ var processor = {
             var g = frame.data[i * 4 + 1];
             var b = frame.data[i * 4 + 2];
 
+            //Grauton (y) des pixels wird aus den einzelnen farben bestimmt
             var y = r * 0.30 + g * 0.59 + b * 0.11;
 
-            //fuer den Grauwet
-            if (isGreaScale1 == true) {
+            //fuer den Grauwet. wenn rgb den gleichen wert haben ist es ein Grauton
+            if (isGreaScale == true) {
                 r = y;
                 g = y;
                 b = y;
             }
 
+            //Abfrage für den Sepia filter.
+            if (isSepia == true) {
+                r = r * 0.39 + g * 0.77 + b * 0.19;
+                g = r * 0.35 + g * 0.69 + b * 0.17;
+                b = r * 0.27 + g * 0.53 + b * 0.13;
+            }
 
             // do the filter processing
             // "brightness": add color offset
