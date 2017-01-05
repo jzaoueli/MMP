@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+    <!-- Page Style -->
+    <style>
+        body {
+            background: darkgray;
+            color: black;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-size: 1.7em;
+            font-weight: normal;
+            padding: 0 0 0 8px;
+        }
+    </style>
+
+    <!-- Javascript image processing -->
+    <script type="text/javascript" src="script/processor.js"></script>
+
+</head>
+<body>
+<h2>MARLENE - LINO FISHER - JIHED ZAOUELI</h2>
+<div>
+    <P>
+    <P>Filter Auswahl:
+        <select name="filter" onchange="processor.selection(this.value)">
+            <option value="">Please select filter</option>
+            <option value="blur">Mittelwert</option>
+            <option value="gauss">Gauss</option>
+            <option value="prewitt">Prewitt</option>
+        </select>
+
+    <div id="blur">
+        <table style="width:100%">
+            <caption><h1> Using weights 5 x 5</h1></caption>
+            <tr>
+                <td>
+                    <!-- video container - run javascript doLoad() when ready -->
+                    <video id="video" muted="true" width="320" height="320" autobuffer="true" controls="true"
+                           tabindex="0" onloadedmetadata="processor.doLoad()">
+                        <!-- webm file for firefox, chrome -->
+                        <source src="assets/v2b.webm" type="video/webm"/>
+                        <!-- mp4 file for safari, IE -->
+                        <source src="assets/v2b.mp4" type="video/mp4"/>
+                        <!-- Alternate content: just print a message, no video available -->
+                        No HTML5-Video support? Try a newer browser! (Opera11, IE9, Firefox4, Safari5)
+                    </video>
+                </td>
+                <td>
+                    <canvas></canvas>
+                </td>
+                <td>
+                    <!-- canvas container for resulting image -->
+                    <canvas id="canvas"></canvas>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#" onclick="startCam()">Start Camera</a>
+                    <script type="text/javascript" src="script/camera.js"></script>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <P>
+    <div id="information">
+    </div>
+
+    <!-- log area to display information from javascript -->
+    <hr>
+    <div id="log">
+    </div>
+
+    <br>
+    <br>
+</div>
+</body>
+</html>
