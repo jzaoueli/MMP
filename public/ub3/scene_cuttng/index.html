@@ -6,8 +6,8 @@
     <!-- Page Style -->
     <style>
         body {
-            background: black;
-            color: #CCCCCC;
+            background: darkgray;
+            color: black;
             font-family: sans-serif;
         }
 
@@ -34,7 +34,8 @@
 <h1>Scene cutting detection</h1>
 <div>
     <!-- video container - run javascript doLoad() when ready -->
-    <video id="video" muted="true" autobuffer="true" controls="true" tabindex="0" onloadedmetadata="processor.doLoad()">
+    <video id="video" muted="true" autobuffer="true"
+           controls="true" tabindex="0" onloadedmetadata="processor.doLoad()">
 
         <!-- webm file for firefox, chrome -->
         <source src="assets/TV.webm" type="video/webm"/>

@@ -2,34 +2,34 @@ var isFirefox = /Firefox/.test(navigator.userAgent);
 var isChrome = /Chrome/.test(navigator.userAgent);
 
 var config = {
-    r_threshold: 0,
-    g_threshold: 0,
-    b_threshold: 0,
+    red_threshold: 0,
+    green_threshold: 0,
+    blue_threshold: 0,
     diff_percentage: 0
 };
 
 var processor = {
     change_channel_threshold: function () {
-        // get color config value
-        config.r_threshold = document.getElementById("threshold_r").value;
-        config.g_threshold = document.getElementById("threshold_g").value;
-        config.b_threshold = document.getElementById("threshold_b").value;
+        //  color config value
+        config.red_threshold = document.getElementById("threshold_r").value;
+        config.green_threshold = document.getElementById("threshold_g").value;
+        config.blue_threshold = document.getElementById("threshold_b").value;
         config.diff_percentage = document.getElementById("diff_percentage").value;
 
 
-        this.log("R: " + config.r_threshold + " | G: " + config.g_threshold + " | B: " + config.b_threshold + " | % Diff: " + config.diff_percentage);
+        this.log("RED: " + config.red_threshold +
+            " | GREEN: " + config.green_threshold +
+            " | BLUE: " + config.blue_threshold +
+            " | % Diff: " + config.diff_percentage);
     },
 
-    /*
-     * Do the image processing for one frame
-     * Reads frame data from rgb picture ctx1 and shows a diff in ctx2
-     */
+  
     computeFrame: function () {
         if (!this.video || this.video.paused || this.video.ended) {
             return;
         }
 
-        // get the context of the canvas 1
+        // content of canvs 1
         var tmpCanvas = document.getElementById("tmp_frame");
         var tmpCtx = tmpCanvas.getContext("2d");
         tmpCtx.width = this.video.width;
@@ -37,63 +37,58 @@ var processor = {
         tmpCanvas.width = this.video.width;
         tmpCanvas.height = this.video.height;
 
-        // draw current video frame to ctx
+        // draw current video frame 
         tmpCtx.drawImage(this.video, 0, 0, this.video.width, this.video.height);
 
-        // get frame RGB data bytes from context ctx 
+       
         var frame = {};
         try {
             frame = tmpCtx.getImageData(0, 0, this.video.width, this.video.height);
         } catch (e) {
-            // catch and display error of getImageData fails
+			
+         // error handling
             this.browserError(e);
         }
 
-
-        if (this.previousFrame) {
-            if (this.isCuttingScene(frame, this.previousFrame)) {
-                this.log("Cut detected at position: " + this.video.currentTime);
+        if (this.prevFrame) {
+            if (this.isCuttingScene(frame, this.prevFrame)) {
+                this.log("Cut at position: " + this.video.currentTime);
             }
         }
 
-        this.previousFrame = frame;
-
-        return;
+       this.prevFrame = frame;
     },
 
-    isCuttingScene: function (frame, previousFrame) {
-        var diffFrame = previousFrame;
+    isCuttingScene: function (frame, prevFrame) {
+        var dFrame = prevFrame;
         var length = (frame.data.length) / 4;
         var numOfPixelsForCut = frame.height * frame.width * (config.diff_percentage / 100);
         var numOfPixelsAboveThreshold = 0;
 
         for (var i = 0; i < length; i++) {
-            var frameR = frame.data[i * 4 + 0];
-            var frameG = frame.data[i * 4 + 1];
-            var frameB = frame.data[i * 4 + 2];
+            var Rframe = frame.data[i * 4];
+            var Gframe = frame.data[i * 4 + 1];
+            var BFrame = frame.data[i * 4 + 2];
 
-            var prevFrameR = previousFrame.data[i * 4 + 0];
-            var prevFrameG = previousFrame.data[i * 4 + 1];
-            var prevFrameB = previousFrame.data[i * 4 + 2];
+            var prevRframe = prevFrame.data[i * 4];
+            var prevGframe = prevFrame.data[i * 4 + 1];
+            var prevBFrame = prevFrame.data[i * 4 + 2];
 
-            var diffR = Math.abs(frameR - prevFrameR);
-            var diffG = Math.abs(frameG - prevFrameG);
-            var diffB = Math.abs(frameB - prevFrameB);
+            var diffR = Math.abs(Rframe - prevRframe);
+            var diffG = Math.abs(Gframe - prevGframe);
+            var diffB = Math.abs(BFrame - prevBFrame);
 
-            // Do not show pixel if any RGB value changed
-            if ((diffR > config.r_threshold)
-                && (diffG > config.g_threshold)
-                && (diffB > config.b_threshold)) {
+            // check threshold
+            if ((diffR > config.red_threshold)
+                && (diffG > config.green_threshold)
+                && (diffB > config.blue_threshold)) {
                 numOfPixelsAboveThreshold++;
             }
         }
 
         if (numOfPixelsAboveThreshold > numOfPixelsForCut) {
-            this.log("------------------------------------");
+            this.log("                  ");
             this.log("Number of pixels above threshold: " + numOfPixelsAboveThreshold);
-
-
-            document.getElementById('video').pause();
 
             return true;
         }
@@ -107,7 +102,7 @@ var processor = {
             return;
         }
 
-        // call the computeFrame function to do the image processing
+        
         this.computeFrame();
 
         // call this function again after a certain time
@@ -128,7 +123,7 @@ var processor = {
         }
 
         try {
-            // get the html <video> and <canvas> elements 
+            
             this.video = document.getElementById("video");
 
             if (!this.video) {
@@ -148,16 +143,16 @@ var processor = {
 
             this.log("Resized video frame to " + this.video.width + "x" + this.video.height);
 
-            config.r_threshold = document.getElementById("threshold_r").value;
-            config.g_threshold = document.getElementById("threshold_g").value;
-            config.b_threshold = document.getElementById("threshold_b").value;
+            config.red_threshold = document.getElementById("threshold_r").value;
+            config.green_threshold = document.getElementById("threshold_g").value;
+            config.blue_threshold = document.getElementById("threshold_b").value;
             config.diff_percentage = document.getElementById("diff_percentage").value;
 
-            this.log("------------------------------------");
-            this.log("Threshold R: " + config.r_threshold)
-            this.log("Threshold G: " + config.g_threshold)
-            this.log("Threshold B: " + config.b_threshold)
-            this.log("Percent Pixel Difference: " + config.diff_percentage)
+            this.log(" ");
+            this.log("Threshold RED: " + config.red_threshold)
+            this.log("Threshold GREEN: " + config.green_threshold)
+            this.log("Threshold BLUE: " + config.blue_threshold)
+            this.log("Difference between Pixel (%): " + config.diff_percentage)
         } catch (e) {
             // catch and display error
             alert("Error: " + e);
@@ -188,8 +183,7 @@ var processor = {
         }
     },
 
-    // helper function: browserError()
-    // displays an error message for incorrect browser settings
+    // check browser
     browserError: function (e) {
 
         this.error = 1;
@@ -209,16 +203,16 @@ var processor = {
             alert("No HTML5 canvas - use a newer browser please.");
             return false;
         }
-        // check for local file access
-        //if(location.host.length>1)
-        //    return;
+
         this.browserChecked = true;
         return true;
     },
 
+	
+	
     browserChecked: false,
     videoWidth: 0,
     videoHeight: 0,
-    timeoutMilliseconds: 40, // (40 ms = 1/25 s)
+    timeoutMilliseconds: 40, 
     error: 0
 };

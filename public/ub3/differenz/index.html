@@ -6,13 +6,19 @@
     <!-- Page Style -->
     <style>
         body {
-            background: black;
-            color: #CCCCCC;
+            background: darkgray;
+            color: black;
             font-family: sans-serif;
         }
 
         h1 {
             font-size: 1.7em;
+            font-weight: normal;
+            padding: 0 0 0 8px;
+        }
+
+        h2 {
+            font-size: 1.1em;
             font-weight: normal;
             padding: 0 0 0 8px;
         }
@@ -23,10 +29,10 @@
     <script type="text/javascript" src="script/camera.js"></script>
 </head>
 <body>
-<h1>Pixel-based image difference</h1>
+<h1>Darstellung der Pixeldifferenz</h1>
 <div>
-    <!-- video container - run javascript doLoad() when ready -->
-    <video id="video" muted="true" autobuffer="true" controls="true" tabindex="0" onloadedmetadata="processor.doLoad()">
+    <h2>Originalvideo (Klick play für die Darstellung der Pixeldifferenz)</h2>
+    <video id="video" muted="true" autobuffer="true" controls="true" tabindex="0" onloadedmetadata="processor.DoCanvases()">
 
         <!-- webm file for firefox, chrome -->
         <source src="assets/blue_screen.webm" type="video/webm"/>
@@ -41,14 +47,15 @@
 
 <div>
     <!-- Canvas container for resulting image -->
+    <h2>Vorheriges Frame</h2>
+
     <canvas id="previous_frame"></canvas>
-    <canvas id="canvas_pixel_diff"></canvas>
+
+    <h2>Pixeldifferenz</h2>
+
+    <canvas id="difference_window"></canvas>
 </div>
 <hr>
-
-<!-- camera button and script -->
-<hr>
-<a href="#" onclick="startCam()">Start Camera</a>
 
 <!-- log area to display information from javascript -->
 <hr>
